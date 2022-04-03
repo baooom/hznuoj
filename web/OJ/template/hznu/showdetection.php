@@ -151,15 +151,18 @@ echo "</code></pre>";
     hljs.init = function () {
         var $code = document.querySelectorAll('pre code');
         
-        var marks = JSON.parse(<?php echo "'".$sdetection."'";?>);
+        var marks = JSON.parse(<?php echo "'".$sdetection."'";?>).map((item,index)=>{return parseInt(item);});
+        marks.sort((a,b)=>{return a-b;});
         console.log(marks);
         if ($code && $code.length) {
+            var cur = 0;
             $code.forEach(function (elem, i) {
                 // 输出行号, -1是为了让最后一个换行忽略
                 var lines = elem.innerHTML.split(/\n/).slice(0, -1);
                 var html = lines.map(function (item, index) {
-                    if (false){
-                        return '<li class="mark language-cpp">' + item + '</li>';                        
+                    if (cur < marks.length && index+1 == marks[cur]){
+                        cur+=1;
+                        return '<li class="mark language-cpp">' + item + '</li>';
                     }else
                         return '<li class="language-cpp">' + item + '</li>';
                 }).join('');
