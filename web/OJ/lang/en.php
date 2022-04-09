@@ -93,6 +93,14 @@ $MSG_Manual="Manual Judge";
 $MSG_OK="OK";
 $MSG_Explain="Type reason or explaination";
 
+//detect_status.php
+$MSG_Detect_Submit="Detect";
+$MSG_Pending_Redetecting="Pending Redetecting";
+$MSG_Compiling="Compiling";
+$MSG_Running_Detecting="Running & Detecting";
+$MSG_Detect_Done="Show Detection";
+$MSG_Detect_Error="Error,No Such Status";
+
 //problemstatistics.php
 $MSG_PD="PD";
 $MSG_PR="PR";

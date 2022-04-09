@@ -227,12 +227,14 @@ $result->free();
 
 //get try times and determine if he can see the video START
 $can_see_video=false;
+$can_detect_bugs=false;
 $try_times=0;
 if(isset($_SESSION['user_id'])){
     $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$real_id'";
     $res=$mysqli->query($sql);
     $try_times=$res->num_rows;
     if($try_times>$VIDEO_SUBMIT_TIME) $can_see_video=true;
+    if($try_times>$DETECT_SUBMIT_TIME) $can_detect_bugs=true;
 }
 //get try times and determine if he can see the video END
 

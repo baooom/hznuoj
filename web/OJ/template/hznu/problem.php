@@ -349,6 +349,7 @@ HTML;
 <?php 
 if (isset($_GET['cid'])) {
     $can_see_video = 0;
+    $can_detect_bugs = 0;
 }
 ?>
 
@@ -364,6 +365,16 @@ if (isset($_GET['cid'])) {
         <?php endif ?>
         <div style="display: block; color: grey; padding-bottom: 20px;">
             *if you see this button, it means you've submited more than <?php echo $VIDEO_SUBMIT_TIME ?> times.
+        </div>
+    <?php endif ?>
+<?php if ($can_detect_bugs || HAS_PRI("watch_solution_video")): ?>
+    <h2>Detect bugs</h2>
+        <form action="detect_status.php" method="POST">
+            <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
+            <button class="am-btn am-btn-success am-btn-lg">Click To Detect The Bugs</button>
+        </form>
+        <div style="display: block; color: grey; padding-bottom: 20px;">
+            *if you see this button, it means you've submited more than <?php echo $DETECT_SUBMIT_TIME ?> times.
         </div>
     <?php endif ?>
 

@@ -29,6 +29,22 @@
     $MSG_Compile_OK,           //12
     $MSG_TEST_RUN              //13
   );
+  $detect_result=Array(
+    $MSG_Detect_Submit,        //0
+    $MSG_Pending_Redetecting,  //1
+    $MSG_Compiling,            //2
+    $MSG_Running_Detecting,    //3
+    $MSG_Detect_Done,          //4
+    $MSG_Detect_Error,         //5
+    $MSG_Detect_Error,         //6
+    $MSG_Detect_Error,         //7
+    $MSG_Detect_Error,         //8
+    $MSG_Detect_Error,         //9
+    $MSG_Detect_Error,         //10
+    $MSG_Detect_Error,         //11
+    $MSG_Detect_Error,         //12
+    $MSG_Detect_Error          //13
+  );
   $jresult=Array($MSG_PD,$MSG_PR,$MSG_CI,$MSG_RJ,$MSG_AC,$MSG_PE,$MSG_WA,$MSG_TLE,$MSG_MLE,$MSG_OLE,$MSG_RE,$MSG_CE,$MSG_CO,$MSG_TR);
   $judge_color=Array("gray","gray","orange","orange","green","red","red","red","red","red","red","navy ","navy");
   $language_name=Array(
