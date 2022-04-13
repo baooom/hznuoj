@@ -3,6 +3,9 @@
 * This file is modified!
 * by yybird
 * @2016.07.01
+* This file is recreate
+* by baomin
+* @2022.4.5
 **/
 ?>
 <?php
@@ -30,9 +33,9 @@ if (!isset($_SESSION['user_id'])){
 $uid = $mysqli->real_escape_string($_SESSION['user_id']);
 //get try times and determine if he can detect bugs START
 $can_detect_bugs=false;
-if(isset($_POST["pid"])&&$_POST["pid"]!=""){
+if(isset($_GET["problem_id"])&&$_GET["problem_id"]!=""){
     $try_times=0;
-    $problem_id = $_POST["pid"];
+    $problem_id = $_GET["problem_id"];
     if(isset($_SESSION['user_id'])){
         $sql = "SELECT solution_id FROM solution WHERE user_id='$uid' AND problem_id='$problem_id'";
         $res=$mysqli->query($sql);
@@ -109,15 +112,15 @@ if (isset($_GET['cid'])){
 $start_first = true;
 // check the problem arg
 $problem_id="";
-if (isset($_POST['pid'])&&$_POST['pid']!=""){
+if (isset($_GET['problem_id'])&&$_GET['problem_id']!=""){
     if(isset($_GET['cid'])){
-        $problem_id=$_POST['pid'];
+        $problem_id=$_GET['problem_id'];
         $num=get_id_from_label($problem_id);
         $sql=$sql." AND `num`='".$num."' ";
         $cntSql .= " AND `num`='".$num."' ";
         $str2=$str2."&problem_id=".$problem_id;
     }else{
-        $problem_id=strval(intval($_POST['pid']));
+        $problem_id=strval(intval($_GET['problem_id']));
         if ($problem_id!='0'){
             $sql=$sql." AND `problem_id`='".$problem_id."' ";
             $cntSql .= " AND `problem_id`='".$problem_id."' ";
@@ -137,6 +140,11 @@ if (isset($_GET['user_id'])){
         if ($str2!="") $str2=$str2."&";
         $str2=$str2."user_id=".$user_id;
     }else $user_id="";
+    if($user_id != $_SESSION['user_id'] && !HAS_PRI("enter_admin_page")){
+        $view_errors= "";
+        require("template/".$OJ_TEMPLATE."/error.php");
+        exit(0);    
+    }
 }
 if (isset($_GET['language'])) $language=intval($_GET['language']);
 else $language=-1;
@@ -185,8 +193,8 @@ if(!isset($_GET['ranklist_ajax_query'])){
 
 if($OJ_SIM){
     $old = $sql;
-    $detect = "SELECT detect_id,solution_id,result AS dresult FROM detect";
-    $sql = "SELECT * FROM ($old) AS solution LEFT JOIN `sim` on solution.solution_id = sim.s_id LEFT JOIN ($detect) AS detect on solution.solution_id=detect.solution_id WHERE 1 ORDER BY solution.solution_id DESC";
+    $detect = "SELECT detect_id,solution_id as d_s_id,result AS dresult FROM detect";
+    $sql = "SELECT * FROM ($old) AS solution LEFT JOIN `sim` on solution.solution_id = sim.s_id LEFT JOIN ($detect) AS detect on solution.solution_id=d_s_id WHERE 1 ORDER BY solution.solution_id DESC";
     // $sql = "SELECT * FROM ($old) AS solution LEFT JOIN `sim` on solution.solution_id = sim.s_id  WHERE 1 ";
     // echo $sql;
 
@@ -275,15 +283,28 @@ if (isset($_GET['cid'])) {
 $info_can_be_read = ( $WA_or_PE || $row['result']==10 || $row['result']==13); // 属于可看类型且
 
 $view_status[$i][3]="";
+//封榜
 if($lock&&$lock_t<=strtotime($row['in_date'])&&$row['user_id']!=$_SESSION['user_id'] && !HAS_PRI("edit_contest")){
     $view_status[$i][3] .= "<span class='am-badge am-text-sm'>Unknown</span>";
+}else if(!isset($row['dresult']) && can_see_res_info($row["solution_id"])){
+    $sid = $row['solution_id'];
+$view_status[$i][3].=<<<HTML
+        <form action="detect_submit.php" method="POST">
+            <input type="hidden" name="sid" value="$sid" placeholder="">
+            <button class="am-badge am-badge-secondary am-text-sm">Detect</button>
+        </form>
+HTML;
+//     "<form action='' method='POST'>
+//     <input type='hidden' name='sid' value='' placeholder=''>
+//     <button class='am-btn am-btn-success am-btn-lg'>Detect</button>
+// </form>";
 }
 else if(intval($row['result'])==11 && can_see_res_info($row["solution_id"])){ //CE
-//only user himself and admin can see CE info.
+    //only user himself and admin can see CE info.
     $view_status[$i][3] .= "<a href='ceinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."'  title='$MSG_Click_Detail'>".$MSG_Compile_Error."</a>";
 }else if(/*intval($row['result'])==6 &&*/ can_see_res_info($row["solution_id"])){ //WA
     //only user himself and admin can see Detect info.
-        $view_status[$i][3] .= "<a href='showdetection.php?id=".$row['detect_id']."' class='".$judge_color[$row['dresult']]."'  title='$MSG_Click_Detail'>".$detect_result[$row['dresult']]."</a>";
+    $view_status[$i][3] .= "<a href='showdetection.php?id=".$row['detect_id']."' class='".$judge_color[$row['dresult']]."'  title='$MSG_Click_Detail'>".$detect_result[$row['dresult']]."</a>";
 }
 else if($info_can_be_read && can_see_res_info($row["solution_id"])){// others
     $view_status[$i][3] .= "<a href='reinfo.php?sid=".$row['solution_id']."' class='".$judge_color[$row['result']]."' title='$MSG_Click_Detail'>".$judge_result[$row['result']]."</a>";
@@ -298,7 +319,7 @@ else {
         if(isset($_GET['showsim'])&&isset($row[13]))
             $view_status[$i][3].= "$row[13]";
     } else {
-//echo $row['result']." ".$judge_result[1]."<br>";
+    //echo $row['result']." ".$judge_result[1]."<br>";
         $view_status[$i][3] .= "<span class='".$judge_color[$row['result']]."'>".$judge_result[$row['result']]."</span>";
     }
 }

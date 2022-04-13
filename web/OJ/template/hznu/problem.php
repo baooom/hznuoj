@@ -369,8 +369,9 @@ if (isset($_GET['cid'])) {
     <?php endif ?>
 <?php if ($can_detect_bugs || HAS_PRI("watch_solution_video")): ?>
     <h2>Detect bugs</h2>
-        <form action="detect_status.php" method="POST">
-            <input type="hidden" name="pid" value="<?php echo $real_id ?>" placeholder="">
+        <form action="detect_status.php" method="GET">
+            <input type="hidden" name="problem_id" value="<?php echo $real_id ?>" placeholder="">
+            <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id'] ?>" placeholder="">
             <button class="am-btn am-btn-success am-btn-lg">Click To Detect The Bugs</button>
         </form>
         <div style="display: block; color: grey; padding-bottom: 20px;">

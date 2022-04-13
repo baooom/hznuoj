@@ -9,14 +9,14 @@
 **/
 ?>
 
-<?php $title="Status";?>
+<?php $title="Detect Status";?>
 <?php include "header.php" ?>
 
 <?php
 
 function generate_url($page){
     global $str2;
-    $link = "status.php?";
+    $link = "detect_status.php?";
     $link .= $str2;
     $link .= "&page=".$page;
     return $link;
@@ -47,7 +47,7 @@ function generate_url($page){
     <!-- 搜索框 start -->
     <div class="am-g">
         <div class="am-u-md-12">
-            <form action="status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;">
+            <form action="detect_status.php" method="get" class="am-form am-form-inline" role="form" style="float: left;">
                 <input type="hidden" name="csrf_token" value="f31605cce38e27bcb4e8a76188e92b3b">
                 <div class="am-form-group"><input type="text" class="am-form-field" placeholder=" &nbsp;Problem ID" name="problem_id" value="<?php echo htmlentities($problem_id)?>"></div>
                 <div class="am-form-group">

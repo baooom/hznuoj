@@ -30,7 +30,7 @@
     $MSG_TEST_RUN              //13
   );
   $detect_result=Array(
-    $MSG_Detect_Submit,        //0
+    $MSG_Pending,              //0
     $MSG_Pending_Redetecting,  //1
     $MSG_Compiling,            //2
     $MSG_Running_Detecting,    //3

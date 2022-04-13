@@ -94,7 +94,7 @@ $MSG_OK="OK";
 $MSG_Explain="Type reason or explaination";
 
 //detect_status.php
-$MSG_Detect_Submit="Detect";
+$MSG_Detect_Submit="Pending";
 $MSG_Pending_Redetecting="Pending Redetecting";
 $MSG_Compiling="Compiling";
 $MSG_Running_Detecting="Running & Detecting";
