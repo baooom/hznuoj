@@ -99,6 +99,7 @@ $MSG_Pending_Redetecting="Pending Redetecting";
 $MSG_Compiling="Compiling";
 $MSG_Running_Detecting="Running & Detecting";
 $MSG_Detect_Done="Show Detection";
+$MSG_Detect_Fail ="Detect Failed";
 $MSG_Detect_Error="Error,No Such Status";
 
 //problemstatistics.php

@@ -74,7 +74,7 @@ else if($OJ_TEMPLATE!="classic")
 $str2="";
 $lock=false;
 $sql="SELECT * FROM `solution` WHERE problem_id > 0";
-$cntSql = "SELECT COUNT(*) AS sum FROM `solution` WHERE problem_id > 0"; 
+$cntSql = "SELECT COUNT(*) AS sum FROM `solution` WHERE problem_id > 0 and result = 6"; 
 
 if (isset($_GET['cid'])){
     $cid=intval($_GET['cid']);
@@ -107,7 +107,7 @@ if (isset($_GET['cid'])){
     }
 } else {
     $sql = "SELECT * FROM `solution` WHERE contest_id is NULL ";
-    $cntSql = "SELECT COUNT(*) AS sum FROM `solution` WHERE contest_id is NULL ";
+    $cntSql = "SELECT COUNT(*) AS sum FROM `solution` WHERE contest_id is NULL AND result = 6";
 }
 $start_first = true;
 // check the problem arg
@@ -159,9 +159,9 @@ if (isset($_GET['jresult'])) $result=intval($_GET['jresult']);
 else $result=-1;
 
 if ($result>12 || $result<0) $result=-1;
-if ($result!=-1&&!$lock){
-    $sql=$sql."AND `result`='".strval($result)."' ";
-    $cntSql .= "AND `result`='".strval($result)."' ";
+if (!$lock){
+    $sql=$sql."AND `result`='6' ";
+    $cntSql .= "AND `result`='6' ";
     $str2=$str2."&jresult=".$result;
 }
 
@@ -288,9 +288,11 @@ if($lock&&$lock_t<=strtotime($row['in_date'])&&$row['user_id']!=$_SESSION['user_
     $view_status[$i][3] .= "<span class='am-badge am-text-sm'>Unknown</span>";
 }else if(!isset($row['dresult']) && can_see_res_info($row["solution_id"])){
     $sid = $row['solution_id'];
+    $pid = $_GET['problem_id'];
 $view_status[$i][3].=<<<HTML
         <form action="detect_submit.php" method="POST">
             <input type="hidden" name="sid" value="$sid" placeholder="">
+            <input type="hidden" name="pid" value="$pid" placeholder="">
             <button class="am-badge am-badge-secondary am-text-sm">Detect</button>
         </form>
 HTML;

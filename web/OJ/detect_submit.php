@@ -30,11 +30,12 @@ if ($res->num_rows > 0 && !HAS_PRI("enter_admin_page")){
 
 $user_id=$_SESSION['user_id'];
 $sid = $_POST['sid'];
+$pid = $_POST['pid'];
 $sql = <<<SQL
 	INSERT INTO detect(solution_id,result) VALUES($sid,0)
 SQL;
 echo $sql;
-exit(0);
+// exit(0);
 $mysqli->query($sql);
 
 $statusURI=strstr($_SERVER['REQUEST_URI'],"submit",true)."status.php";
@@ -68,8 +69,11 @@ else if(file_exists($file))
 	unlink($file);
     //echo $file;
 
-$statusURI="detect_status.php?user_id=".$_SESSION['user_id'];
-if (isset($cid))
+$statusURI= "detect_status.php?user_id=".$_SESSION['user_id'];
+if (isset($pid))
+	$statusURI.="&problem_id=$pid";
+
+	if (isset($cid))
 	$statusURI.="&cid=$cid";
 
 if(!$test_run){

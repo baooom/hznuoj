@@ -36,7 +36,7 @@
     $MSG_Running_Detecting,    //3
     $MSG_Detect_Done,          //4
     $MSG_Detect_Error,         //5
-    $MSG_Detect_Error,         //6
+    $MSG_Detect_Fail,          //6
     $MSG_Detect_Error,         //7
     $MSG_Detect_Error,         //8
     $MSG_Detect_Error,         //9
